@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
+from .forms import TaskForm
 
 # Create your views here.
 
@@ -48,6 +49,11 @@ def signup(request):
 def tasks(request):
     return render(request, 'tasks.html')
 
+# la vista que se devolverá al crear una nueva tarea
+def create_task(request):
+    return render(request, 'create_task.html', {
+        'form': TaskForm
+    })
 
 def signout(request):
     logout(request)
