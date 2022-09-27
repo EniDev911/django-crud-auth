@@ -14,7 +14,7 @@
   <title>DJANGO CRUD AUTH TASK</title>
 </head>
 
-<body>
+<body class="bg-light bg-gradient">
   <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
       <a href="/" class="navbar-brand">django crud auth</a>
@@ -23,15 +23,15 @@
       </button>
       <div class="navbar-collapse collapse" id="navbarNAV">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="/signup">Signup</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/">Inicio</a></li>
           {% if user.is_authenticated %}
           <li class="nav-item"><a class="nav-link" href="{% url 'tasks' %}">Tareas pendientes</a></li>
           <li class="nav-item"><a class="nav-link" href="{% url 'tasks_completed' %}">Tareas completadas</a></li>
           <li class="nav-item"><a class="nav-link" href="/tasks/create">Crear una nueva tarea</a></li>
           <li class="nav-item"><a class="nav-link" href="/logout">Salir</a></li>
           {% else %}
-          <li class="nav-item"><a class="nav-link" href="/signin">Signin</a></li>
+          <li class="nav-item"><a class="nav-link" href="/signin">Iniciar sesión</a></li>
+          <li class="nav-item"><a class="nav-link" href="/signup">Registrarse</a></li>
           {% endif %}
         </ul>
       </div>
