@@ -1,7 +1,9 @@
-from django.shortcuts import render
-from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.contrib.auth import login, logout, authenticate
+from django.db import IntegrityError
 
 # Create your views here.
 
@@ -16,6 +18,9 @@ def signup(request):
     # cuando la petición viene por post se quiere procesar los datos
     if request.method == 'GET':
         print('Enviando formulario')
+        return render(request, 'signup.html', {
+            'form': UserCreationForm
+        })
     else:
         print('Obteniendo datos')
         if request.POST['password1'] == request.POST['password2']:
@@ -25,8 +30,9 @@ def signup(request):
                     username=request.POST['username'],
                     password=request.POST['password1'])
                 user.save()
-                return HttpResponse('Guardado')            
-            except Exception as e:
+                login(request, user)
+                return redirect('tasks')     
+            except IntegrityError as e:
                 print(e)
                 return render(request, 'signup.html', {
                     'form': UserCreationForm,
@@ -38,7 +44,31 @@ def signup(request):
             'error': 'Contraseña no coinciden'
         })
 
-    return render(request, 'signup.html', {
-        'form': UserCreationForm
-    })
+# la vista que se devolvera al estar autenticado
+def tasks(request):
+    return render(request, 'tasks.html')
 
+
+def signout(request):
+    logout(request)
+    return redirect('home')
+
+def signin(request):
+
+    if request.method == 'GET':
+        return render(request, 'signin.html', {
+            'form': AuthenticationForm
+        })
+    else:
+        user = authenticate(request, 
+                username=request.POST['username'], 
+                password=request.POST['password'])
+        if user is None:
+             return render(request, 'signin.html', {
+            'form': AuthenticationForm,
+            'error': 'Usuario o password es incorrecto'
+        })
+        else:
+            login(request, user)
+            return redirect('tasks')
+ 
