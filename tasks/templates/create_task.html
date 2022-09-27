@@ -4,7 +4,9 @@
 {% block content %}
 <h1>Create task</h1>
 
-<form action="/taks/create" method="POST">
+<form action="/tasks/create/" method="POST">
+  {% csrf_token %}
   {{form}}
+  <button type="submit">Guardar</button>
 </form>
 {% endblock %}
